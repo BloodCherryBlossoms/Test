@@ -1,0 +1,31 @@
+|(vue-router, vuex, sass, babel, typescript, pwa, eslint, unit-jest, e2e-cypress
+|
+|
+|vue-cli 2.0 静态文件夹static 路径直接填写 static/json
+|
+|
+|vue-cli 3.0 静态文件夹public 路径直接填写public下 如public/static/xx.json 写成 static/xx.json
+|
+|
+|安装npm i element-react --save (elementUI)
+|安装npm install axios (axios)
+|安装npm install vue-router (vue-router)(vue--cli 3.0已经自带无需安装)
+|安装npm install typescript ts-loader --save-dev (typescript)(vue--cli 3.0已经自带无需安装)
+|
+核心 : router -| index.js (路由)
+
+图片 : assets
+
+数据库 (临时测试): static -| json
+
+elementUI : element -| index.js(UI框架)
+
+存储响应状态:  vuex -| index.js
+
+首页  : APP - | -> plugin - | imgHome - | -> Basic - | Home
+              |
+              | -> HeadUL -| Ulnav
+
+
+页面  : components
+

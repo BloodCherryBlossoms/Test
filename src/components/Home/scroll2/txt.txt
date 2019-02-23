@@ -1,0 +1,263 @@
+
+
+export interface TreeData {
+  id?: any;
+  label?: string;
+  disabled?: boolean;
+  isLeaf?: boolean;
+  children?: TreeData[];
+}
+
+export interface TreeProps {
+  label: string;
+  disabled: string;
+  isLeaf: string;
+  children: string;
+}
+
+export interface TreeNode<K, D> {
+  checked: boolean;
+  childNodes: TreeNode<K, D>[];
+  data: D;
+  expanded: boolean;
+  id: number;
+  indeterminate: boolean;
+  isLeaf: boolean;
+  level: number;
+  loaded: boolean;
+  loading: boolean;
+  parent: TreeNode<K, D> | null;
+  store: any;
+  visible: boolean;
+  disabled: boolean;
+  icon: string;
+  key: K;
+  label: string;
+  nextSibling: TreeNode<K, D> | null;
+  previousSibling: TreeNode<K, D> | null;
+}
+
+/**不完整，你可以转换为任何使用其他属性*/
+export interface TreeStore<K, D> {
+  _getAllNodes: () => TreeNode<K, D>[];
+}
+
+/**树组件*/
+export declare class ElTree <K = any，D = TreeData> extends ElementUIComponent {
+  /** 树菜单 */
+  store: TreeStore<K, D>;
+  
+  /**树数据*/
+  data: D[''];
+  
+  /**数据无效时显示的文字*/
+  emptyText: string;
+  
+  /**节点的唯一标识密钥名称，其值应在整个树中唯一*/
+  nodeKey: string;
+  
+  /**配置选项，见下表*/
+  props: TreeProps;
+  
+  /**加载子树数据的方法*/
+  load：（data：D，resolve：Function）=> void;
+  
+   /**
+    *渲染特定节点的功能
+    *
+     * @param h渲染功能
+    */
+    renderContent：（h：CreateElement，context：{node：TreeNode <K，D>; data：D; store：TreeStore <K，D>}）=> VNode;
+  
+  /**当前节点是否突出显示*/
+  highlightCurrent：boolean;
+
+  /**是否默认扩展所有节点*/
+  defaultExpandAll：boolean;
+
+  /**单击节点时是否展开或折叠节点。如果为false，则仅在单击箭头图标时展开或折叠节点。 */
+  expandOnClickNode：boolean;
+
+  /**单击节点时是否选中或取消选中节点，如果为false，则只能通过单击复选框来选中或取消选中该节点。 */
+  checkOnClickNode：boolean;
+
+  /**扩展子节点时是否扩展父节点*/
+  autoExpandParent：boolean;
+
+  /**最初扩展节点的键数组*/
+  defaultExpandedKeys：K[''];
+
+  /**节点是否可选*/
+  showCheckbox：boolean;
+
+  /**当show-checkbox为true时，检查节点的状态是否不影响其父节点和子节点*/
+  checkStrictly：boolean;
+
+  /**最初检查的节点的键数组*/
+  defaultCheckedKeys：K[''];
+
+  /**
+   *使用过滤方法时，将在每个节点上执行此功能。如果返回false，则将隐藏树节点。
+   *
+   * @param value查询字符串
+   * @param数据原始数据对象
+   * @param节点树节点
+   */
+  filterNodeMethod：（value：string，data：D，node：TreeNode <K，D>）=> boolean;
+
+/**同一级别中是否只能同时扩展一个节点*/
+  accordion: boolean;
+
+  /**相邻级别中节点的水平缩进，以像素为单位*/
+  indent: number;
+
+  /**是否启用树节点拖放*/
+  draggable：boolean;
+
+  /**
+   *拖动节点之前要执行的功能
+   *
+   * @param node要拖动的节点
+   */
+  allowDrag :( node：TreeNode <K，D>）=> boolean;
+
+  /**
+   *删除拖动节点之前要执行的功能
+   *
+   * @param draggingNode拖动节点
+   * @param dropNode目标节点
+   * @param类型Drop类型
+   */
+  allowDrop :( draggingNode：TreeNode <K，D>，dropNode：TreeNode <K，D>，type：'prev'|'inner'|'next'）=> boolean;
+
+  /**
+   *过滤所有树节点。过滤的节点将被隐藏
+   *
+   * @param value用作`filter-node-method`的第一个参数的值
+   */
+  filter（value：any）：void;
+
+  /**
+   *更新密钥指定的节点的子节点
+   *
+   * @param键是要更新子节点的节点的键
+   * @param数据子数据
+   */
+  updateKeyChildren（key：K，data：D['']）：void;
+
+  /**
+   *如果可以选择节点（`show-checkbox`为'true`），则返回当前选定的节点数组
+   *
+   * @param leafOnly如果`leafOnly`是'true`，它只返回当前选定的子节点数组
+   * @param includeHalfChecked如果`includeHalfChecked`是'true`，则返回值包含halfchecked节点
+   */
+  getCheckedNodes（leafOnly？：boolean，includeHalfChecked？：boolean）：D[''];
+
+  /**
+   *设置要检查的某些节点。仅在分配`node-key`时有效
+   *
+   * @param nodes要检查的节点数组
+   * @param leafOnly如果参数为true，则仅返回当前选定的子节点数组
+   */
+  setCheckedNodes（data：D['']，leafOnly？：boolean）：void;
+
+  /**
+   *如果可以选择节点（`show-checkbox`是'true`），它将返回当前选定的节点键数组
+   *
+   * @param leafOnly如果`leafOnly`是'true`，它只返回当前选定的子节点数组
+   */
+  getCheckedKeys（leafOnly？：boolean）：K[''];
+
+  /**
+   *设置要检查的某些节点。仅在分配`node-key`时有效
+   *
+   * @param keys要检查的节点键数组
+   * @param leafOnly如果参数为true，则仅返回当前选定的子节点数组
+   */
+  setCheckedKeys（keys：K['']，leafOnly？：boolean）：void;
+
+  /**
+   *设置要检查的节点。仅在分配`node-key`时有效
+   *
+   * @param数据节点的密钥或要检查的数据
+   * @param checked指示是否检查了节点
+   * @param deep指示是否深入检查状态
+   */
+  setChecked（data：D | K，checked：boolean，deep：boolean）：void;
+
+  /**
+   *如果可以选择节点（`show-checkbox`为'true`），则返回当前半选定的节点数组
+   */
+  getHalfCheckedNodes（）：D[''];
+
+  /**
+   *如果可以选择节点（`show-checkbox`是'true`），它将返回当前一半选定的节点键数组
+   */
+  getHalfCheckedKeys（）：K[''];
+
+  /**
+   *返回高亮节点的键（如果没有突出显示节点，则返回null）
+   */
+  getCurrentKey（）：K;
+
+  /**
+   *按键设置突出显示的节点，仅在分配了节点键时有效
+   *
+   * @param key要突出显示的节点的键
+   */
+  setCurrentKey（key：K）：void;
+
+  /**
+   *返回高亮节点数据（如果没有突出显示节点，则返回null）
+   * @todo方法的名称应该是getCurrentNodeData
+   */
+  getCurrentNode（）：D;
+
+  /**
+   *设置突出显示的节点，仅在分配节点键时有效
+   *
+   * @param node要突出显示的节点
+   */
+  setCurrentNode（data：D）：void;
+
+  /**
+   *逐节点密钥或节点数据获取
+   *
+   * @param按节点键或节点数据
+   */
+  getNode（by：D | K）：TreeNode <K，D>;
+
+  /**
+   *按键或节点数据或节点实例删除节点
+   *
+   * @param按键或节点数据或节点实例
+   */
+  删除（由：D | K）：void;
+
+  /**
+   *将子节点附加到指定节点
+   *
+   * @param childData附加节点的数据
+   * @param父键或节点数据或父节点的节点实例
+   */
+  append（childData：D，parent：D | K）：void;
+
+  /**
+   *在指定节点之前插入节点
+   *
+   * @param数据插入节点的数据
+   * @param ref key或节点数据或参考节点的节点实例
+   */
+  insertBefore（data：D，ref：D | K）：void;
+
+  /**
+   *在指定节点后插入节点
+   *
+   * @param数据插入节点的数据
+   * @param ref key或节点数据或参考节点的节点实例
+   */
+  insertAfter（data：D，ref：D | K）：void;
+
+  /**自定义树节点图标*/
+  iconClass?: string;
+}
